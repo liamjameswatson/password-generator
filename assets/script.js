@@ -87,10 +87,16 @@ var upperCasedCharacters = [
   "Y",
   "Z",
 ];
-
 // Enter Validation requirements here
 minLength = 10;
 maxLength = 64;
+
+var passwordArraysObject = {
+  number: numericCharacters,
+  upperCase: upperCasedCharacters,
+  lowerCase: lowerCasedCharacters,
+  special: specialCharacters,
+};
 
 // Function to prompt user for password options
 function getPasswordOptions() {
@@ -126,9 +132,8 @@ function getPasswordOptions() {
     }
     return passwordLength;
   }
-  // Call length of password function. Min = 10, Max = 64
   var lengthOfPassword = validatePasswordLength(minLength, maxLength);
-  return lengthOfPassword;
+  // Call length of password function. Min = 10, Max = 64
 
   // ------------------------- End VALIDATION LENGTH CHECK ----------------------------
 
@@ -156,21 +161,91 @@ function getPasswordOptions() {
   // no - to go back, and start again.
   // }
   // }
+
+  var maxLengthOfSpecialCharacters = 1;
+  var charactersRemaining = lengthOfPassword - maxLengthOfSpecialCharacters;
+
+  // Function that loops through an object, asking user confirms and validates answer.  If user types invalid infomation, the prompt will continue to show.
+  function validationCheckerAndPrompt(ObjectToValidate) {
+    var validationAnswersObject = {};
+    var passwordAnswersTemp;
+    for (var i = 0; i < Object.keys(ObjectToValidate).length; i++) {
+      if (Object.keys(ObjectToValidate)[i] === "special") {
+        // -------------------------------------FIX THIS------------------------------------------------
+        if (
+          charactersRemaining ===
+          lengthOfPassword - maxLengthOfSpecialCharacters
+        ) {
+          alert("Your password we be full of special characters");
+        }
+        validationAnswersObject[Object.keys(ObjectToValidate)[i]] =
+          charactersRemaining + maxLengthOfSpecialCharacters;
+      } else {
+        // Prompt user - Would you like (numbers/upperCase/lowerCase...)
+        passwordAnswersTemp = confirm(
+          "Would you like " +
+            Object.keys(ObjectToValidate)[i] +
+            " in your password? \n Click Ok for Yes, Cancel for No"
+        );
+        if (passwordAnswersTemp === false) {
+          passwordAnswersTemp = 0;
+          charactersRemaining = charactersRemaining;
+        } else {
+          passwordAnswersTemp = prompt(
+            "How many " +
+              Object.keys(ObjectToValidate)[i] +
+              " characters would you like?"
+          );
+          while (isNaN(passwordAnswersTemp)) {
+            passwordAnswersTemp = prompt("Please enter a valid number");
+          }
+          charactersRemaining = charactersRemaining - passwordAnswersTemp;
+          while (charactersRemaining < 1) {
+            charactersRemaining =
+              charactersRemaining + parseInt(passwordAnswersTemp);
+            passwordAnswersTemp = prompt(
+              "Sorry, this is too many " +
+                Object.keys(ObjectToValidate)[i] +
+                " values.\n You have " +
+                charactersRemaining +
+                " out of a password length of " +
+                lengthOfPassword +
+                ".\n How many " +
+                Object.keys(ObjectToValidate)[i] +
+                " values would you like?\n Note: One or more characters need to be remaining for special characters."
+            );
+            while (isNaN(passwordAnswersTemp)) {
+              passwordAnswersTemp = prompt("Please enter a valid number");
+            }
+            charactersRemaining = charactersRemaining - passwordAnswersTemp;
+          }
+          alert(
+            "You have selected " +
+              passwordAnswersTemp +
+              " " +
+              Object.keys(ObjectToValidate)[i] +
+              "\nYou have " +
+              charactersRemaining +
+              " remaining"
+          );
+        }
+
+        // --------------- END PROMPT VALIDATION LOWERCASE --------------------------
+        // Add the objectTo
+        validationAnswersObject[Object.keys(ObjectToValidate)[i]] =
+          passwordAnswersTemp;
+
+        // And Repeat
+      }
+    }
+    return validationAnswersObject;
+  }
+  var answersArray = validationCheckerAndPrompt(passwordArraysObject);
+  return answersArray;
 }
 
-var validPasswordLength = getPasswordOptions();
-var letterRemaining = validPasswordLength;
-
-console.log("valid password " + validPasswordLength);
-console.log("letters remaining " + letterRemaining);
-//  get answer 5 numbers back from user
-// 1) password length
-// 2) Uppercase letters:
-// 3) Lowercase letters:
-// 4) Numeric characters:
-// 5) Special
-
-// }
+var answers = getPasswordOptions();
+console.log(answers);
 
 // Function for getting a random element from an array
 function getRandom(arr) {}
