@@ -100,12 +100,7 @@ var passwordArraysObject = {
 
 // Function to prompt user for password options
 function getPasswordOptions() {
-  // -------------------------VALIDATION FOR LENGTH OF PASSWORD CHECK ---------------------------
-  //   Ask User how many letters they want?
-  // inital number
-  //  store number in var
-  // store letters remaining in var
-  // -------------------------VALIDATION FOR LENGTH OF PASSWORD CHECK ----------------------------
+  // -------------------------VALIDATION FOR LENGTH OF PASSWORD CHECK ------------------------------------------------------------
   function validatePasswordLength(min, max) {
     // Prompt user for a number
     var passwordLength = prompt(
@@ -135,43 +130,21 @@ function getPasswordOptions() {
   var lengthOfPassword = validatePasswordLength(minLength, maxLength);
   // Call length of password function. Min = 10, Max = 64
 
-  // ------------------------- End VALIDATION LENGTH CHECK ----------------------------
+  // ------------------------- End VALIDATION LENGTH CHECK -----------------------------------------------------------------------
 
-  // --------------------------------------------------------------------------------
-  // prompt - confirm- user for option
-  // userResponse = confirm
-  // if confirm = True{
-  // do this
-  // var Option number = prompt, how many do you want? press cancel for random amount...
-  // if option number = more than letters remaining - 1 (-1 for the special)
-  //  alert(Too many x - You have chosen Y amount of characters for your password. Cannot have X in Y )
-  // Repeat  var Option number = prompt....
-  // store = Option number
-  // letters remaining = letters remaining - option number
-  // break
-  // }
-  // else - confirm = false{
-  // letters remaining = letters remaining
-  // continue
-  // if(when gets to last object option (.length-1)){
-  // letters remaining === initial number
-  // alert - (You have chosen no uppercase, lowercase, numbers (for loop object.length-1)){
-  // Do you want all special characters in your password? Ok to get password.  Cancel to go back.
-  // yes - to continue
-  // no - to go back, and start again.
-  // }
-  // }
-
+  // At least one special character
   var maxLengthOfSpecialCharacters = 1;
+  //
   var charactersRemaining = lengthOfPassword - maxLengthOfSpecialCharacters;
 
+  // -----------------------------------------------Validate the prompt options ------------------------------------------------------------------------------------
   // Function that loops through an object, asking user confirms and validates answer.  If user types invalid infomation, the prompt will continue to show.
   function validationCheckerAndPrompt(ObjectToValidate) {
     var validationAnswersObject = {};
     var passwordAnswersTemp;
     for (var i = 0; i < Object.keys(ObjectToValidate).length; i++) {
+      // if it a special - alert
       if (Object.keys(ObjectToValidate)[i] === "special") {
-        // -------------------------------------FIX THIS------------------------------------------------
         if (
           charactersRemaining ===
           lengthOfPassword - maxLengthOfSpecialCharacters
@@ -181,25 +154,29 @@ function getPasswordOptions() {
         validationAnswersObject[Object.keys(ObjectToValidate)[i]] =
           charactersRemaining + maxLengthOfSpecialCharacters;
       } else {
-        // Prompt user - Would you like (numbers/upperCase/lowerCase...)
+        // Anything other than special = Prompt user - Would you like (numbers/upperCase/lowerCase...)
         passwordAnswersTemp = confirm(
           "Would you like " +
             Object.keys(ObjectToValidate)[i] +
             " in your password? \n Click Ok for Yes, Cancel for No"
         );
+        //  if confirm is false - 0 will be added to this prompt
         if (passwordAnswersTemp === false) {
           passwordAnswersTemp = 0;
           charactersRemaining = charactersRemaining;
         } else {
+          // if user does want option to be added - ask how many
           passwordAnswersTemp = prompt(
             "How many " +
               Object.keys(ObjectToValidate)[i] +
               " characters would you like?"
           );
+          //  if user input is not a number - continue to prompt
           while (isNaN(passwordAnswersTemp)) {
             passwordAnswersTemp = prompt("Please enter a valid number");
           }
           charactersRemaining = charactersRemaining - passwordAnswersTemp;
+          // If the user enters a number that is too high, remove number and ask for another. (Example cannot have 200 Uppercase letters if the password length is 10)
           while (charactersRemaining < 1) {
             charactersRemaining =
               charactersRemaining + parseInt(passwordAnswersTemp);
@@ -214,11 +191,13 @@ function getPasswordOptions() {
                 Object.keys(ObjectToValidate)[i] +
                 " values would you like?\n Note: One or more characters need to be remaining for special characters."
             );
+            // If user enters anything that is not a number - repeat prompt
             while (isNaN(passwordAnswersTemp)) {
               passwordAnswersTemp = prompt("Please enter a valid number");
             }
             charactersRemaining = charactersRemaining - passwordAnswersTemp;
           }
+          // alert user, they have selected... they have...remaining
           alert(
             "You have selected " +
               passwordAnswersTemp +
@@ -229,9 +208,7 @@ function getPasswordOptions() {
               " remaining"
           );
         }
-
-        // --------------- END PROMPT VALIDATION LOWERCASE --------------------------
-        // Add the objectTo
+        // Add the validated answer to validationAnswersObject
         validationAnswersObject[Object.keys(ObjectToValidate)[i]] =
           passwordAnswersTemp;
 
@@ -243,6 +220,8 @@ function getPasswordOptions() {
   var answersArray = validationCheckerAndPrompt(passwordArraysObject);
   return answersArray;
 }
+
+// -----------------------------------------------End validate the prompt options get|PasswordOptions()------------------------------------------------------------------------------------
 
 // Function for getting a random element from an array
 function getRandom(arr) {
@@ -258,91 +237,26 @@ function getRandom(arr) {
   return arr;
 }
 
-// For each array in passwordArrayObject - shuffle the array
-var shuffledArrays = {};
+// Function to generate password with user input
+// function generatePassword() {
+var answers = getPasswordOptions();
 
+// Loop through the arrays, shuffle each one and add to the shuffledArrays
+var shuffledArrays = {};
 for (var i = 0; i < Object.values(passwordArraysObject).length; i++) {
   var shuffledArray = getRandom(Object.values(passwordArraysObject)[i]);
   shuffledArrays[i] = shuffledArray;
-  console.log("Shuffle Arrays" + shuffledArrays[i].splice(0, 4));
 }
 
-var arrayOne = Object.values(passwordArraysObject);
-
-// 4 shufflued arrays
-// console.log(shuffledArrays);
-
-// TODO: Have Shuffled arrays object, have object of answers.    shuffles array.splice(0, object.values(answer))
-// TODO: console.log first, of both arrays
-// TODO: Add To New Password array.
-
-// 4 answers
-var answers = getPasswordOptions();
-
-var splicedArrays = [];
+// Loop through the shuffled arrays, for each one, splice it to the password options
+var splicedArrays = {};
 for (var i = 0; i < Object.values(answers).length; i++) {
-  console.log(shuffledArrays[i].splice(0, Object.values(answers)[i]));
-
-
-  // TODO: save spliced arrays
+  var splicedArray = shuffledArrays[i].splice(0, Object.values(answers)[i]);
+  splicedArrays[i] = splicedArray;
+  // console.log(shuffledArrays[i].splice(0, Object.values(answers)[i]));
 }
+console.log(splicedArrays);
 
-console.log(Object.values(splicedArrays)[0]);
-
-// var splicdedArray = spliceArrays();
-// console.log("spliced " + Object.entries(splicdedArray));
-
-// console.log("splicedArrays " + Object.values(splicedArrays));
-
-var newPasswordArray = {};
-
-newPasswordArray = [Object.values(answers)[0], shuffledArrays[0]];
-
-console.log(Object.entries(newPasswordArray));
-
-// Function to generate password with user input
-// function generatePassword() {
-//   var answers = getPasswordOptions();
-
-//   var passwordObject = {};
-
-//   if (answers.lowercase) {
-//     passwordObject.lowerString = lowerCasedCharacters.join("");
-//     password += getRandom(passwordObject.lowerString);
-//   }
-//   if (answers.uppercase) {
-//     passwordObject.upperString = upperCasedCharacters.join("");
-//     password += getRandom(passwordObject.upperString);
-//   }
-//   if (answers.numericString) {
-//     passwordObject.numericString = numericCharacters.join();
-//     password += getRandom(passwordObject.numericString);
-//   }
-//   // if (answers.special) {
-//   //   passwordObject.specialString = specialCharacters.join("");
-//   //   password += getRandom(passwordObject.specialString);
-//   // }
-//   console.log(passwordObject);
-//   for (i = password.length; i < answers.numberChar; i++) {
-//     password += getRandom(Object.values(passwordObject).join("")); // fill the rest of the password with random characters
-//   }
-//   console.log("new pass:" + password);
-//   return password;
-
-//   console.log("numbers = " + answers.number);
-//   console.log(passwordObject);
-//   var password = "";
-//   password += getRandom(passwordObject.lowerString);
-//   password += getRandom(passwordObject.upperString);
-//   password += getRandom(passwordObject.numericString);
-//   password += getRandom(passwordObject.specialString);
-//   for (i = password.length; i < answers.numberChar; i++) {
-//     password += getRandom(Object.values(passwordObject).join("")); // fill the rest of the pwd with random characters
-//   }
-//   console.log("new pass:" + password);
-//   // var joinedPassword = password.join('');
-//   //console.log('password ' + joinedPassword);
-//   return password;
 // }
 
 // // Get references to the #generate element
