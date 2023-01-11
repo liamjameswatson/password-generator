@@ -244,30 +244,117 @@ function getPasswordOptions() {
   return answersArray;
 }
 
-var answers = getPasswordOptions();
-console.log(answers);
-
 // Function for getting a random element from an array
-function getRandom(arr) {}
+function getRandom(arr) {
+  var i = arr.length,
+    j,
+    temp;
+  while (--i > 0) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+// For each array in passwordArrayObject - shuffle the array
+var shuffledArrays = {};
+
+for (var i = 0; i < Object.values(passwordArraysObject).length; i++) {
+  var shuffledArray = getRandom(Object.values(passwordArraysObject)[i]);
+  shuffledArrays[i] = shuffledArray;
+  console.log("Shuffle Arrays" + shuffledArrays[i].splice(0, 4));
+}
+
+var arrayOne = Object.values(passwordArraysObject);
+
+// 4 shufflued arrays
+// console.log(shuffledArrays);
+
+// TODO: Have Shuffled arrays object, have object of answers.    shuffles array.splice(0, object.values(answer))
+// TODO: console.log first, of both arrays
+// TODO: Add To New Password array.
+
+// 4 answers
+var answers = getPasswordOptions();
+
+var splicedArrays = [];
+for (var i = 0; i < Object.values(answers).length; i++) {
+  console.log(shuffledArrays[i].splice(0, Object.values(answers)[i]));
+
+
+  // TODO: save spliced arrays
+}
+
+console.log(Object.values(splicedArrays)[0]);
+
+// var splicdedArray = spliceArrays();
+// console.log("spliced " + Object.entries(splicdedArray));
+
+// console.log("splicedArrays " + Object.values(splicedArrays));
+
+var newPasswordArray = {};
+
+newPasswordArray = [Object.values(answers)[0], shuffledArrays[0]];
+
+console.log(Object.entries(newPasswordArray));
 
 // Function to generate password with user input
-function generatePassword() {
-  // For each prompt answer - go into that array and choose random character from each array.
-  // Add to var = new password for each iteration
-  // Shuffle order of new password
-}
+// function generatePassword() {
+//   var answers = getPasswordOptions();
 
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+//   var passwordObject = {};
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+//   if (answers.lowercase) {
+//     passwordObject.lowerString = lowerCasedCharacters.join("");
+//     password += getRandom(passwordObject.lowerString);
+//   }
+//   if (answers.uppercase) {
+//     passwordObject.upperString = upperCasedCharacters.join("");
+//     password += getRandom(passwordObject.upperString);
+//   }
+//   if (answers.numericString) {
+//     passwordObject.numericString = numericCharacters.join();
+//     password += getRandom(passwordObject.numericString);
+//   }
+//   // if (answers.special) {
+//   //   passwordObject.specialString = specialCharacters.join("");
+//   //   password += getRandom(passwordObject.specialString);
+//   // }
+//   console.log(passwordObject);
+//   for (i = password.length; i < answers.numberChar; i++) {
+//     password += getRandom(Object.values(passwordObject).join("")); // fill the rest of the password with random characters
+//   }
+//   console.log("new pass:" + password);
+//   return password;
 
-  passwordText.value = password;
-  // display new password
-}
+//   console.log("numbers = " + answers.number);
+//   console.log(passwordObject);
+//   var password = "";
+//   password += getRandom(passwordObject.lowerString);
+//   password += getRandom(passwordObject.upperString);
+//   password += getRandom(passwordObject.numericString);
+//   password += getRandom(passwordObject.specialString);
+//   for (i = password.length; i < answers.numberChar; i++) {
+//     password += getRandom(Object.values(passwordObject).join("")); // fill the rest of the pwd with random characters
+//   }
+//   console.log("new pass:" + password);
+//   // var joinedPassword = password.join('');
+//   //console.log('password ' + joinedPassword);
+//   return password;
+// }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+// // Get references to the #generate element
+// var generateBtn = document.querySelector("#generate");
+
+// // Write password to the #password input
+// function writePassword() {
+//   var password = generatePassword();
+//   var passwordText = document.querySelector("#password");
+
+//   passwordText.value = password;
+// }
+
+// // Add event listener to generate button
+// generateBtn.addEventListener("click", writePassword);
