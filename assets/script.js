@@ -248,27 +248,40 @@ for (var i = 0; i < Object.values(passwordArraysObject).length; i++) {
   shuffledArrays[i] = shuffledArray;
 }
 
-// Loop through the shuffled arrays, for each one, splice it to the password options
+// Loop through the shuffled arrays object, for each one, splice it to the password options
 var splicedArrays = {};
 for (var i = 0; i < Object.values(answers).length; i++) {
   var splicedArray = shuffledArrays[i].splice(0, Object.values(answers)[i]);
   splicedArrays[i] = splicedArray;
   // console.log(shuffledArrays[i].splice(0, Object.values(answers)[i]));
 }
-console.log(splicedArrays);
 
-// }
+// Loop through the values of the spliceArrays object push them to one array - The object is going to an array
+var fullPasswordArray = [];
+for (var i = 0; i < Object.values(splicedArrays).length; i++) {
+  console.log(Object.values(splicedArrays)[i]);
+  fullPasswordArray.push(Object.values(splicedArrays)[i]);
+}
+// Now fullPassowrdArray is an array of arrays. [[numeric], [upperCase], [lowerCase], [special]]
+var finalPasswordArray = [];
+for (var i = 0; i < fullPasswordArray.length; i++) {
+  finalPasswordArray = finalPasswordArray.concat(fullPasswordArray[i]);
+}
 
-// // Get references to the #generate element
-// var generateBtn = document.querySelector("#generate");
+finalPasswordArray = getRandom(finalPasswordArray);
 
-// // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
+console.log("final password " + finalPasswordArray.join(""));
 
-//   passwordText.value = password;
-// }
+// Get references to the #generate element
+var generateBtn = document.querySelector("#generate");
 
-// // Add event listener to generate button
-// generateBtn.addEventListener("click", writePassword);
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+}
+
+// Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
