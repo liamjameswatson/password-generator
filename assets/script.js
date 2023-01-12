@@ -87,7 +87,8 @@ var upperCasedCharacters = [
   "Y",
   "Z",
 ];
-// Enter Validation requirements here
+
+// Enter Validation requirements here ---------------------------------
 minLength = 10;
 maxLength = 64;
 
@@ -98,14 +99,19 @@ var passwordArraysObject = {
   special: specialCharacters,
 };
 
+// ----------------------------------------------------------------
+
 // Function to prompt user for password options
 function getPasswordOptions() {
   // -------------------------VALIDATION FOR LENGTH OF PASSWORD CHECK ------------------------------------------------------------
   function validatePasswordLength(min, max) {
     // Prompt user for a number
     var passwordLength = prompt(
-      "Length of password (10 - 64 characters)",
-      "10"
+      "Please enter a password length...\nLength of password (" +
+        min +
+        "-" +
+        max +
+        " characters.)"
     );
     // check for not a number, under 10 or over 64
     while (
@@ -121,7 +127,11 @@ function getPasswordOptions() {
       // if not valid, repeat prompt
       else {
         passwordLength = prompt(
-          "Not enough characters or too many! \n Please choose a number between 10 and 64."
+          "Not enough characters or too many! \n Please choose a number between" +
+            min +
+            " and " +
+            max +
+            "."
         );
       }
     }
