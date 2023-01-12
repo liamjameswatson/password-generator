@@ -181,7 +181,7 @@ function getPasswordOptions() {
               Object.keys(ObjectToValidate)[i] +
               " characters would you like?"
           );
-          console.log("typeof = " + typeof passwordAnswersTemp);
+
           //  if user input is not a number - continue to prompt
           while (
             isNaN(passwordAnswersTemp) ||
@@ -262,12 +262,10 @@ function generatePassword() {
   var shuffledArrays = {};
   for (var i = 0; i < Object.values(passwordArraysObject).length; i++) {
     var shuffledArray = getRandom(Object.values(passwordArraysObject)[i]);
-    console.log(Object.values(answers)[i]);
-    console.log("shuffles Array " + Object.values(shuffledArray));
+    // If number in prompt is larger than the length of the array, make a longer array
     while (Object.values(answers)[i] > shuffledArray.length) {
-      console.log("BIGGER");
+      // add the same array onto the array with concatenate. This keeps it as an array, rather than an object
       shuffledArray = shuffledArray.concat(shuffledArray);
-      console.log("DOUBLED " + shuffledArray);
     }
     shuffledArrays[i] = shuffledArray;
   }
@@ -294,7 +292,7 @@ function generatePassword() {
 
   var password = getRandom(finalPasswordArray);
   password = password.join("");
-  console.log("paasword + " + password);
+  console.log("paasword = " + password);
 
   return password;
 }
