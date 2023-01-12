@@ -213,6 +213,7 @@ function getPasswordOptions() {
             ) {
               passwordAnswersTemp = prompt("Please enter a valid number");
             }
+            charactersRemaining = charactersRemaining - passwordAnswersTemp;
           }
           // alert user, they have selected... they have...remaining
           alert(
@@ -257,11 +258,17 @@ function getRandom(arr) {
 function generatePassword() {
   // Password options a generated and validated
   var answers = getPasswordOptions();
-
   // Loop through the arrays, shuffle each one and add to the shuffledArrays
   var shuffledArrays = {};
   for (var i = 0; i < Object.values(passwordArraysObject).length; i++) {
     var shuffledArray = getRandom(Object.values(passwordArraysObject)[i]);
+    console.log(Object.values(answers)[i]);
+    console.log("shuffles Array " + Object.values(shuffledArray));
+    while (Object.values(answers)[i] > shuffledArray.length) {
+      console.log("BIGGER");
+      shuffledArray = shuffledArray.concat(shuffledArray);
+      console.log("DOUBLED " + shuffledArray);
+    }
     shuffledArrays[i] = shuffledArray;
   }
 
@@ -270,13 +277,11 @@ function generatePassword() {
   for (var i = 0; i < Object.values(answers).length; i++) {
     var splicedArray = shuffledArrays[i].splice(0, Object.values(answers)[i]);
     splicedArrays[i] = splicedArray;
-    // console.log(shuffledArrays[i].splice(0, Object.values(answers)[i]));
   }
 
   // Loop through the values of the spliceArrays object push them to one array - The object is going to an array
   var fullPasswordArray = [];
   for (var i = 0; i < Object.values(splicedArrays).length; i++) {
-    console.log(Object.values(splicedArrays)[i]);
     fullPasswordArray.push(Object.values(splicedArrays)[i]);
   }
   // Now fullPasswordArray is an array of arrays. [[numeric], [upperCase], [lowerCase], [special]]
