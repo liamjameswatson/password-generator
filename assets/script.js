@@ -121,7 +121,7 @@ function getPasswordOptions() {
     ) {
       // If number is valid - break out of while loop and continue
       if (passwordLength >= min && passwordLength <= max) {
-        convertedAnswer = passwordLength;
+        passwordLength = passwordLength;
         break;
       }
       // if not valid, repeat prompt
@@ -181,8 +181,13 @@ function getPasswordOptions() {
               Object.keys(ObjectToValidate)[i] +
               " characters would you like?"
           );
+          console.log("typeof = " + typeof passwordAnswersTemp);
           //  if user input is not a number - continue to prompt
-          while (isNaN(passwordAnswersTemp)) {
+          while (
+            isNaN(passwordAnswersTemp) ||
+            passwordAnswersTemp === null ||
+            passwordAnswersTemp === ""
+          ) {
             passwordAnswersTemp = prompt("Please enter a valid number");
           }
           charactersRemaining = charactersRemaining - passwordAnswersTemp;
@@ -201,11 +206,13 @@ function getPasswordOptions() {
                 Object.keys(ObjectToValidate)[i] +
                 " values would you like?\n Note: One or more characters need to be remaining for special characters."
             );
-            // If user enters anything that is not a number - repeat prompt
-            while (isNaN(passwordAnswersTemp)) {
+            while (
+              isNaN(passwordAnswersTemp) ||
+              passwordAnswersTemp === null ||
+              passwordAnswersTemp === ""
+            ) {
               passwordAnswersTemp = prompt("Please enter a valid number");
             }
-            charactersRemaining = charactersRemaining - passwordAnswersTemp;
           }
           // alert user, they have selected... they have...remaining
           alert(
