@@ -192,7 +192,7 @@ function getPasswordOptions() {
           }
           charactersRemaining = charactersRemaining - passwordAnswersTemp;
           // If the user enters a number that is too high, remove number and ask for another. (Example cannot have 200 Uppercase letters if the password length is 10)
-          while (charactersRemaining < 1) {
+          while (charactersRemaining < 0) {
             charactersRemaining =
               charactersRemaining + parseInt(passwordAnswersTemp);
             passwordAnswersTemp = prompt(
